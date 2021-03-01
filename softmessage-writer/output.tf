@@ -1,0 +1,4 @@
+
+output "ip" {
+    value = "placeholder"
+}
