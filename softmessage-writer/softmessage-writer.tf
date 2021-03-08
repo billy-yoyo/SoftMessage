@@ -16,6 +16,10 @@ resource "aws_ecr_repository" "softmessage_writer_repo" {
     name = "softmessage-writer-repo"
 }
 
+resource "aws_cloudwatch_log_group" "softmessage_writer_log_group" {
+  name = "softmessage-writer"
+}
+
 resource "aws_ecs_task_definition" "softmessage_writer_task" {
     family = "softmessage_writer_family"
 
@@ -43,10 +47,22 @@ resource "aws_ecs_task_definition" "softmessage_writer_task" {
                 "hostPort": 3000
             }
         ],
+        "logConfiguration": {
+          "logDriver": "awslogs",
+          "options": {
+            "awslogs-group": "softmessage-writer",
+            "awslogs-region": "${var.region}",
+            "awslogs-stream-prefix": "ecs"
+          }
+        },
         "environment": [
           {
             "name": "topic_message",
             "value": "${var.topic_arn}"
+          },
+          {
+            "name": "region",
+            "value": "${var.region}"
           }
         ]
     }

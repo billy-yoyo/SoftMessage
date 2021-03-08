@@ -5,7 +5,20 @@ const app = express();
 const port = 3000;
 const topicArn = process.env.topic_message;
 
-aws.config.update({region: 'eu-west-1'});
+const parseRawBody = (req, res, next) => {
+    req.setEncoding('utf8');
+    req.rawBody = '';
+    req.on('data', (chunk) => {
+        req.rawBody += chunk;
+    });
+    req.on('end', () => {
+        next();
+    });
+}
+
+app.use(parseRawBody);
+
+aws.config.update({region: process.env.region});
 
 app.get('/', (req, res) => res.send('Hello World!'));
 
@@ -24,7 +37,7 @@ app.post('/api/v1/user/:userId/message/:channelId', (req, res) => {
     const payload = {
         userId,
         channelId,
-        body: req.body
+        body: req.rawBody
     };
 
     new aws.SNS().publish({

@@ -3,6 +3,10 @@ variable "region" {
     type = string
 }
 
+variable "account_id" {
+    type = string
+}
+
 variable "topic_arn" {
     type = string
 }

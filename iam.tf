@@ -41,3 +41,24 @@ resource "aws_iam_role_policy_attachment" "softmessage_message_topic_policy_atta
   policy_arn = aws_iam_policy.softmessage_message_topic_policy.arn
 }
 
+resource "aws_iam_policy" "softmessage_message_queue_policy" {
+  name = "softmessage-message-queue-policy"
+  policy = jsonencode({
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Action": [
+          "SQS:ReceiveMessage",
+          "SQS:DeleteMessage"
+        ],
+        "Resource": aws_sqs_queue.softmessage_message_queue.arn
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "softmessage_message_queue_policy_attachment" {
+  role = aws_iam_role.softmessage_ecs_role.name
+  policy_arn = aws_iam_policy.softmessage_message_queue_policy.arn
+}

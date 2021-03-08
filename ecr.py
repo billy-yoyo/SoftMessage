@@ -4,7 +4,9 @@ from subprocess import check_output
 REGION = "eu-west-1"
 ACCOUNT_ID = "209209409693"
 REPOS = [
-    ["softmessage-writer-repo", "softmessage-writer"]
+    ["softmessage-writer-repo", "softmessage-writer"],
+    ["softmessage-digest-repo", "softmessage-digest"],
+    ["softmessage-web-repo", "softmessage-web"],
 ]
 
 def repo_url(region, account_id, repo_name):

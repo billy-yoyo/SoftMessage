@@ -1,5 +1,9 @@
 # Softmessage
 
+## Requisites
+
+Npm & Node (developed with node v12), terraform, aws cli, psql.
+
 ## Quickstart
 
 Assuming you've configured terraform and aws correctly (mainly just credentials), to deploy run the following two commands:
