@@ -2,6 +2,7 @@ FROM node:12.7.0-alpine
 WORKDIR /usr/src/app
 COPY package.json ./
 RUN npm i
-COPY src ./src
+COPY server ./server
+COPY web ./web
 EXPOSE 3000
-CMD ["node", "src/app.js"]
+CMD ["npm", "start"]

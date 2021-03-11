@@ -17,18 +17,22 @@ const queueParams = {
 
 const receiveMessage = async (sqsMessage) => {
     const snsMessage = JSON.parse(sqsMessage.Body);
-    const message = snsMessage.Message;
+    const message = JSON.parse(snsMessage.Message);
 
     const userId = message.userId;
     const channelId = message.channelId;
     const body = message.body;
 
     const query = `
-    INSERT INTO sm_messages(user_id, channel_id, body) VALUES ($1, $2, $3)
+    INSERT INTO sm_message(user_id, channel_id, body) VALUES ($1, $2, $3)
     `.trim();
     const values = [userId, channelId, body];
 
+    console.log(`storing message ${JSON.stringify(message)}`);
+
     await client.query(query, values);
+
+    console.log('stored');
 };
 
 const deleteMessage = async (message) => new Promise((resolve, reject) => {

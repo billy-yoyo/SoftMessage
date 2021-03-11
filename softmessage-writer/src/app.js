@@ -40,6 +40,8 @@ app.post('/api/v1/user/:userId/message/:channelId', (req, res) => {
         body: req.rawBody
     };
 
+    console.log(`publishing message ${JSON.stringify(payload)} to sns`);
+
     new aws.SNS().publish({
         TopicArn: topicArn,
         Message: JSON.stringify(payload)
