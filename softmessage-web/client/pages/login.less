@@ -1,0 +1,47 @@
+@import '../style/index.less';
+
+.login {
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    max-width: 400px;
+
+    .login-title {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 20px;
+        font-size: 2.5rem;
+        font-weight: bolder;
+        color: @primary;
+    }
+
+    .login-error {
+        font-size: 1rem;
+        color: @error;
+        margin-top: 3px;
+        margin-bottom: 3px;
+        color: @error;
+    }
+
+    .textbox-container {
+        margin-top: 10px;
+    }
+
+    .login-buttons {
+        margin-top: 20px;
+        display: flex;
+        flex-direction: row;
+
+        div {
+            flex-grow: 1;
+            margin-right: 10px;
+        }
+
+        .sign-up-button {
+            margin-right: 0;
+        }
+    }
+}

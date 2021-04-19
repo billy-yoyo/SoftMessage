@@ -6,9 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "buildClient": "webpack -c client/webpack.config.js",
+    "watchClient": "webpack -c client/webpack.config.js --watch",
     "buildServer": "tsc --project server/tsconfig.json",
     "build": "npm run buildClient && npm run buildServer",
-    "start": "npm run build && node ."
+    "start": "node ."
   },
   "author": "",
   "license": "ISC",
@@ -27,7 +28,7 @@
     "react-dom": "^17.0.1",
     "style-loader": "^2.0.0",
     "ts-loader": "^8.0.17",
-    "tsplate": "^1.4.0",
+    "tsplate": "^1.4.1",
     "typescript": "^4.2.3",
     "webpack": "^5.24.4",
     "webpack-cli": "^4.5.0"

@@ -1,15 +1,21 @@
 import * as React from 'react';
-import { Channel } from '../../../common/models/Channel';
+import ClientChannel from '../../models/clientChannel';
 import './channelItem.less';
 
 interface ChannelItemProps {
-    channel: Channel;
+    channel: ClientChannel;
+    selectedChannel: ClientChannel;
+    setSelectedChannel: (channel: ClientChannel) => void;
 }
 
-export default ({ channel }: ChannelItemProps): JSX.Element => {
+export default ({ channel, selectedChannel, setSelectedChannel }: ChannelItemProps): JSX.Element => {
+
+    const onClick = () => {
+        setSelectedChannel(channel);
+    };
 
     return (
-        <div className="channel-item">
+        <div className={'channel-item' + (channel.id === selectedChannel?.id ? ' selected' : '')} onClick={onClick}>
             { channel.name }
         </div>
     )

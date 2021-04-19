@@ -1,0 +1,44 @@
+@import '../../style/index.less';
+
+.textbox-container {
+    display: flex;
+    flex-direction: column;
+
+    &.error .textbox {
+        border-color: @error;
+    }
+}
+
+.textbox-title {
+    font-size: 1rem;
+    font-weight: bold;
+    color: @primary;
+    margin-bottom: 3px;
+}
+
+.textbox {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: unset;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-style: solid;
+    border-width: 2px;
+    border-color: @primary;
+    border-radius: 4px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    color: @primary;
+    text-align: center;
+}
+
+.textbox-error {
+    font-size: 1rem;
+    color: @error;
+    margin-top: 3px;
+}

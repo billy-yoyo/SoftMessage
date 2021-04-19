@@ -1,0 +1,32 @@
+@import '../../style/index.less';
+
+.message {
+    padding-left: 15px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    display: flex;
+    flex-direction: column;
+
+    .message-header {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-bottom: 3px;
+
+        .message-author {
+            font-weight: bold;
+        }
+
+        .message-time {
+            color: @dark-grey;
+            font-size: 0.75rem;
+            margin-left: 3px;
+            padding-top: 2px;
+        }
+    }
+
+    .message-body {
+        word-wrap: break-word;
+        margin-bottom: 2px;
+    }
+}

@@ -2,6 +2,8 @@ const aws = require('aws-sdk');
 const { Client } = require('pg');
 const client = new Client();
 const migrate = require('./migrate');
+const EventHandlers = require('./events');
+const wss = require('./websocket');
 
 aws.config.update({region: process.env.region});
 
@@ -15,24 +17,22 @@ const queueParams = {
     WaitTimeSeconds: 0
 };
 
+wss.start();
+
 const receiveMessage = async (sqsMessage) => {
     const snsMessage = JSON.parse(sqsMessage.Body);
     const message = JSON.parse(snsMessage.Message);
 
-    const userId = message.userId;
-    const channelId = message.channelId;
-    const body = message.body;
+    const eventType = message.type;
+    const eventData = message.data;
 
-    const query = `
-    INSERT INTO sm_message(user_id, channel_id, body) VALUES ($1, $2, $3)
-    `.trim();
-    const values = [userId, channelId, body];
+    const handler = EventHandlers[eventType];
 
-    console.log(`storing message ${JSON.stringify(message)}`);
-
-    await client.query(query, values);
-
-    console.log('stored');
+    if (handler) {
+        await handler(wss, eventData);
+    } else {
+        console.warn(`no handler for sns event type ${eventType}`);
+    }
 };
 
 const deleteMessage = async (message) => new Promise((resolve, reject) => {
@@ -74,17 +74,17 @@ const processBatch = async () => {
     }));
 }
 
-// poll sqs once per second
 const processLoop = async () => {
     console.log('connecting to client...');
     await client.connect();
     console.log('migrating database...');
     await migrate(client);
     console.log('starting process loop...');
+    await client.end();
 
     const loop = async () => {
         await processBatch();
-        setTimeout(loop, 1000);
+        setTimeout(loop, 20);
     };
     
     await loop();

@@ -1,0 +1,1 @@
+{"version":3,"file":"messageRow.js","sourceRoot":"","sources":["../../../server/dto/messageRow.ts"],"names":[],"mappings":";;AACA,yDAAsD;AAEtD,kBAAe,CAAC,UAAsB,EAAW,EAAE;IAC/C,OAAO,IAAI,iBAAO,CACd,UAAU,CAAC,UAAU,EACrB,UAAU,CAAC,OAAO,EAClB,UAAU,CAAC,UAAU,EACrB,UAAU,CAAC,IAAI,EACf,UAAU,CAAC,SAAS,CACvB,CAAC;AACN,CAAC,CAAC"}

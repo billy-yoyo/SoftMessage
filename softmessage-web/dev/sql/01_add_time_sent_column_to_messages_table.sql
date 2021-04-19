@@ -1,0 +1,4 @@
+
+ALTER TABLE sm_message
+ADD COLUMN IF NOT EXISTS time_sent TIMESTAMPTZ
+

@@ -4,7 +4,7 @@ resource "aws_subnet" "softmessage_db_subnet" {
   vpc_id                  = aws_vpc.softmessage_vpc.id
   cidr_block              = "10.0.${3 + length(data.aws_availability_zones.available.names) + count.index}.0/24"
   map_public_ip_on_launch = true
-  availability_zone       = "${element(data.aws_availability_zones.available.names, count.index)}"
+  availability_zone       = element(data.aws_availability_zones.available.names, count.index)
 }
 
 resource "aws_db_subnet_group" "default" {
@@ -39,10 +39,10 @@ resource "aws_db_instance" "softmessage_db" {
   engine_version         = "12.5"
   instance_class         = "db.t2.micro"
   name                   = "softmessagedb"
-  username               = "softwire"
+  username               = var.db_username
   port                   = "5432"
-  password               = "jellyfish"
+  password               = var.db_password
   db_subnet_group_name   = aws_db_subnet_group.default.id
   vpc_security_group_ids = [ aws_security_group.softmessage_db_security_group.id ]
-  final_snapshot_identifier = "softmessage-db-snapshot"
+  final_snapshot_identifier = "softmessage-db-final-snapshot-${md5(timestamp())}"
 }

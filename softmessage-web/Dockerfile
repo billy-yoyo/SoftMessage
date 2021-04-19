@@ -3,6 +3,8 @@ WORKDIR /usr/src/app
 COPY package.json ./
 RUN npm i
 COPY server ./server
-COPY web ./web
+COPY client ./client
+COPY common ./common
+RUN npm run build
 EXPOSE 3000
 CMD ["npm", "start"]

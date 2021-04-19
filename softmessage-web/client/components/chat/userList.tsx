@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { User } from '../../../common/models/User';
 import './userList.less';
 import UserItem from './userItem';
+import ClientUser from '../../models/clientUser';
 
 interface UserListProps {
-    users: User[];
+    users: ClientUser[];
 }
 
 export default ({ users }: UserListProps): JSX.Element => {

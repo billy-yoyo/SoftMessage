@@ -1,0 +1,15 @@
+{
+    "name": "softmessage-web-migrate",
+    "version": "1.0.0",
+    "description": "",
+    "main": "./runMigrate.js",
+    "scripts": {
+      "start": "node ."
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+      "pg": "^8.5.1"
+    }
+  }
+  

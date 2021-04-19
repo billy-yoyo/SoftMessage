@@ -1,0 +1,19 @@
+@import '../../style/index.less';
+
+.channel-item {
+    padding-left: 15px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    word-wrap: break-word;
+
+    &.selected {
+        background-color: @primary-light;
+    }
+
+    &:hover {
+        background-color: @primary-dark;
+    }
+}

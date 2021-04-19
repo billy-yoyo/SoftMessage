@@ -1,0 +1,40 @@
+@import '../../style/index.less';
+
+.channel-list-panel {
+    min-width: 300px;
+    max-width: 20%;
+    background-color: @primary;
+    color: @white;
+    overflow-y: auto;
+
+    .channel-list-title {
+        font-size: 2rem;
+        font-weight: bold;
+        padding-left: 20px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid @white;
+    }
+
+    .channel-list {
+        padding-top: 10px;
+        padding-left: 10px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .add-channel {
+        padding-left: 15px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+
+    .set-channel-name {
+        padding: 2px;
+        padding-left: 10px;
+        margin: 5px;
+        border: 1px solid @black;
+        border-radius: 5px;
+        height: 30px;
+    }
+}

@@ -27,11 +27,11 @@ variable "db_password" {
     type = string
 }
 
-variable "subnet_public_a_id" {
+variable "subnet_private_a_id" {
     type = string
 }
 
-variable "subnet_public_b_id" {
+variable "subnet_private_b_id" {
     type = string
 }
 
@@ -40,5 +40,9 @@ variable "security_group_id" {
 }
 
 variable "ecs_role_arn" {
+    type = string
+}
+
+variable "vpc_id" {
     type = string
 }

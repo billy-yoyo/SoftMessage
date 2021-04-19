@@ -2,7 +2,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 2.70"
+      version = "3.33.0"
     }
   }
 }
@@ -86,6 +86,41 @@ resource "aws_ecs_cluster" "softmessage_web_cluster" {
     name = "softmessage_web_cluster"
 }
 
+resource "aws_lb" "softmessage_web_lb" {
+  name = "softmessage-web-lb"
+  internal = true
+  load_balancer_type = "application"
+  subnets = [var.subnet_private_a_id, var.subnet_private_b_id]
+  security_groups = [var.security_group_id]
+}
+
+resource "aws_lb_target_group" "softmessage_web_target_group" {
+  name = "softmessage-web-target-group"
+  port = 3000
+  protocol = "HTTP"
+  target_type = "ip"
+  vpc_id = var.vpc_id
+
+  health_check {
+    enabled = true
+    port = 3000
+    path = "/health"
+  }
+
+  depends_on = [ "aws_lb.softmessage_web_lb" ]
+}
+
+resource "aws_alb_listener" "softmessage_web_alb_listener" {
+  load_balancer_arn = aws_lb.softmessage_web_lb.arn
+  port = 3000
+  protocol = "HTTP"
+
+  default_action {
+    target_group_arn = aws_lb_target_group.softmessage_web_target_group.arn
+    type = "forward"
+  }
+}
+
 resource "aws_ecs_service" "softmessage_web_service" {
     name = "softmessage_web_service"
 
@@ -96,8 +131,16 @@ resource "aws_ecs_service" "softmessage_web_service" {
     desired_count = 1
 
     network_configuration {
-        subnets = [var.subnet_public_a_id, var.subnet_public_b_id]
+        subnets = [var.subnet_private_a_id, var.subnet_private_b_id]
         security_groups = [var.security_group_id]
-        assign_public_ip = true
+        assign_public_ip = false
     }
+
+    load_balancer {
+      target_group_arn = aws_lb_target_group.softmessage_web_target_group.arn
+      container_name = "softmessage_web_container"
+      container_port = 3000
+    }
+
+    depends_on = [ "aws_lb_target_group.softmessage_web_target_group" ]
 }

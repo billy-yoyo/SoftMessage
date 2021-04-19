@@ -7,6 +7,7 @@ REPOS = [
     ["softmessage-writer-repo", "softmessage-writer"],
     ["softmessage-digest-repo", "softmessage-digest"],
     ["softmessage-web-repo", "softmessage-web"],
+    ["softmessage-api-repo", "softmessage-api"]
 ]
 
 def repo_url(region, account_id, repo_name):

@@ -13,3 +13,15 @@ variable "rds_instance_identifier" {
     type = string
     default = "softmessage-db"
 }
+
+variable "db_username" {
+    type = string
+}
+
+variable "db_password" {
+    type = string
+}
+
+variable "jwt_secret" {
+    type = string
+}
