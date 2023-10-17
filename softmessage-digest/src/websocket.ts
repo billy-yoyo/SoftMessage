@@ -1,9 +1,9 @@
-const WebSocket = require('ws');
-const express = require('express');
-const { Pool } = require('pg');
-const pool = new Pool();
-const { createServer } = require('http');
-const jwt = require('jsonwebtoken');
+import WebSocket from 'ws';
+import express from 'express';
+import db from '../../softmessage-common/db/db';
+import { createServer } from 'http';
+import jwt from 'jsonwebtoken';
+import { Event } from '../../softmessage-common/models/event';
 
 const app = express();
 
@@ -12,14 +12,17 @@ app.get('/health', (req, res) => res.send('ok'));
 const server = createServer(app);
 const wss = new WebSocket.Server({ server });
 
-class WebSocketConnection {
-    constructor(ws, connections) {
+export class WebSocketConnection {
+    private ws: WebSocket;
+    private userId: number | null;
+
+    constructor(ws: WebSocket, connections: {[id: number]: WebSocketConnection}) {
         this.ws = ws;
         this.userId = null;
 
         this.ws.on('message', (message) => {
             // message should just be a JWT token
-            jwt.verify(message, process.env.JWT_SECRET, (err, decoded) => {
+            jwt.verify(message.toString(), process.env.JWT_SECRET, (err, decoded: { userId?: number }) => {
                 if (err || !decoded.userId) {
                     this.ws.close();
                 } else {
@@ -38,15 +41,15 @@ class WebSocketConnection {
         ws.send(JSON.stringify({ eventType: 'connect' }));
     }
 
-    send(event) {
+    send(event: Event) {
         this.ws.send(JSON.stringify(event));
     }
 }
 
-class WebSocketServer {
-    start() {
-        this.connections = {};
+export class WebSocketServer {
+    private connections: {[id: number]: WebSocketConnection} = {};
 
+    start() {
         wss.on('connection', (ws) => {
             console.log('user connected');
             new WebSocketConnection(ws, this.connections);
@@ -57,7 +60,7 @@ class WebSocketServer {
         });
     }
 
-    sendUser(userId, event) {
+    sendUser(userId: number, event: Event) {
         const connection = this.connections[userId];
         if (connection) {
             console.log(`sending event to ${userId} who has an active connection`);
@@ -65,26 +68,23 @@ class WebSocketServer {
         }
     }
 
-    async sendChannel(channelId, event) {
+    async sendChannel(channelId: number, event: Event) {
         const userIds = await this.getUsersForChannel(channelId);
         console.log(`sending event ${JSON.stringify(event)} to channel ${channelId} with users ${userIds.join(', ')}`);
         userIds.forEach(userId => this.sendUser(userId, event));
     }
 
-    async getUsersForChannel(channelId) {
-        const client = await pool.connect();
-        const query = `SELECT * FROM sm_channel_users WHERE channel_id = $1`;
-        const result = await client.query(query, [channelId]);
-        const userIds = [];
+    async getUsersForChannel(channelId: number) {
+        const connection = await db.connect();
+        try {
+            const channelUsers = await connection.sm_channel_users.query({ channel_id: channelId }).findAll();
 
-        for (const row of result.rows) {
-            userIds.push(row.user_id);
+            const userIds = channelUsers.map(user => user.user_id);
+            return userIds;
+        } finally {
+            await connection.release();
         }
-
-        client.release();
-
-        return userIds; 
     }
 }
 
-module.exports = new WebSocketServer();
+export default new WebSocketServer();

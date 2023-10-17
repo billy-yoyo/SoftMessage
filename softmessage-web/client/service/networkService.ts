@@ -1,8 +1,8 @@
-import { Channel, TChannel } from "../../common/models/channel";
-import { Message, TMessage } from "../../common/models/message";
-import { User, TUser } from "../../common/models/user";
+import { Channel, TChannel } from "../../../softmessage-common/models/channel";
+import { Message, TMessage } from "../../../softmessage-common/models/message";
+import { User, TUser } from "../../../softmessage-common/models/user";
 import T, { Template } from 'tsplate';
-import { TToken, Token } from "../../common/models/token";
+import { TToken, Token } from "../../../softmessage-common/models/token";
 import cache from "../cache/clientCache";
 
 const apiPath = '/v1/api';

@@ -7,16 +7,15 @@
         "moduleResolution": "node",
         "experimentalDecorators": true,
         "sourceMap": true,
-        "outDir": "../dist",
+        "outDir": "./dist",
         "baseUrl": ".",
         "paths": {
             "*": [
-                "../node_modules/*"
+                "./node_modules/*"
             ]
         }
     },
     "include": [
-        "./**/*",
-        "../common/**/*"
-, "../../softmessage-common/db/dto"    ]
+        "src/**/*",
+    ]
 }

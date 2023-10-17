@@ -1,5 +1,5 @@
-import { User } from "../../common/models/user";
-import { UserRow } from "../db/tables/sm_user";
+import { User } from "../../models/user";
+import { UserRow } from "../tables/sm_user";
 
 export default (userRow: UserRow): User => {
     return new User(

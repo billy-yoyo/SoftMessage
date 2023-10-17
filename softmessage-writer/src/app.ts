@@ -1,11 +1,13 @@
-const express = require('express');
-const aws = require('aws-sdk');
+import express from 'express';
+import aws from 'aws-sdk';
 
 const app = express();
 const port = 3000;
 const topicArn = process.env.topic_message;
 
-const parseRawBody = (req, res, next) => {
+type RawBodyRequest = express.Request & { rawBody?: string };
+
+const parseRawBody = (req: RawBodyRequest, res: express.Response, next: () => void) => {
     req.setEncoding('utf8');
     req.rawBody = '';
     req.on('data', (chunk) => {
@@ -23,7 +25,7 @@ aws.config.update({region: process.env.region});
 app.get('/', (req, res) => res.send('Hello World!'));
 app.get('/health', (req, res) => res.send('ok'));
 
-const publish = (payload) => {
+const publish = (res: express.Response, payload: any) => {
     console.log(`publishing message ${JSON.stringify(payload)} to sns`);
     
     new aws.SNS().publish({
@@ -37,7 +39,7 @@ const publish = (payload) => {
     });
 };
 
-app.post('/v1/api/user/:userId/message/:channelId', (req, res) => {
+app.post('/v1/api/user/:userId/message/:channelId', (req: RawBodyRequest, res) => {
     const userId = parseInt(req.params.userId);
     const channelId = parseInt(req.params.channelId);
 
@@ -49,7 +51,7 @@ app.post('/v1/api/user/:userId/message/:channelId', (req, res) => {
         res.status(400).send('Invalid channel id');
     }
 
-    publish({
+    publish(res, {
         type: 'create-message',
         data: {
             userId,
@@ -72,7 +74,7 @@ app.post('/v1/api/user/:userId/channels/:channelId', (req, res) => {
         res.status(400).send('Invalid channel id');
     }
 
-    publish({
+    publish(res, {
         type: 'user-join',
         data: {
             userId,

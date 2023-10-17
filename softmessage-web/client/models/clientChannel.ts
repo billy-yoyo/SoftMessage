@@ -4,7 +4,7 @@ import * as networkService from "../service/networkService";
 import cache from "../cache/clientCache";
 import singleton from "../cache/singletonTask";
 import { EventEmitter } from "./eventEmitter";
-import { Message } from "../../common/models/message";
+import { Message } from "../../../softmessage-common/models/message";
 
 const unknownUser = (userId: number) => {
     const user = new ClientUser(userId, 'Unknown User', false);

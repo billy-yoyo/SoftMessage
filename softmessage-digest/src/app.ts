@@ -1,9 +1,10 @@
-const aws = require('aws-sdk');
-const { Client } = require('pg');
+import * as aws from 'aws-sdk';
+import { Client } from 'pg';
+import migrate from './migrate';
+import EventHandlers from './events';
+import wss from './websocket';
+
 const client = new Client();
-const migrate = require('./migrate');
-const EventHandlers = require('./events');
-const wss = require('./websocket');
 
 aws.config.update({region: process.env.region});
 
@@ -19,7 +20,7 @@ const queueParams = {
 
 wss.start();
 
-const receiveMessage = async (sqsMessage) => {
+const receiveMessage = async (sqsMessage: any) => {
     const snsMessage = JSON.parse(sqsMessage.Body);
     const message = JSON.parse(snsMessage.Message);
 
@@ -35,7 +36,7 @@ const receiveMessage = async (sqsMessage) => {
     }
 };
 
-const deleteMessage = async (message) => new Promise((resolve, reject) => {
+const deleteMessage = async (message: any): Promise<void> => new Promise((resolve, reject) => {
     sqs.deleteMessage({
         QueueUrl: queueUrl,
         ReceiptHandle: message.ReceiptHandle
@@ -48,7 +49,7 @@ const deleteMessage = async (message) => new Promise((resolve, reject) => {
     });
 });
 
-const readMessageBatch = async () => new Promise((resolve, reject) => {
+const readMessageBatch = async (): Promise<any[]> => new Promise((resolve, reject) => {
     sqs.receiveMessage(queueParams, (err, data) => {
         if (err) {
             reject(err);
@@ -62,9 +63,9 @@ const readMessageBatch = async () => new Promise((resolve, reject) => {
 });
 
 const processBatch = async () => {
-    const sqsMessages = await readMessageBatch();
+    const sqsMessages: any[] = await readMessageBatch();
 
-    await Promise.all(sqsMessages.map(async (sqsMessage) => {
+    await Promise.all(sqsMessages.map(async (sqsMessage: any) => {
         try {
             await receiveMessage(sqsMessage);
         } catch (e) {

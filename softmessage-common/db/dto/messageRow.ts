@@ -1,5 +1,5 @@
-import { MessageRow } from "../db/tables/sm_message";
-import { Message } from "../../common/models/message";
+import { MessageRow } from "../tables/sm_message";
+import { Message } from "../../models/message";
 
 export default (messageRow: MessageRow): Message => {
     return new Message(

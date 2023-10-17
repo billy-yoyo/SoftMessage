@@ -1,5 +1,5 @@
-import { Channel } from "../../common/models/channel";
-import { User, TUser } from "../../common/models/user";
+import { Channel } from "../../../softmessage-common/models/channel";
+import { User, TUser } from "../../../softmessage-common/models/user";
 import ClientChannel from "../models/clientChannel";
 import ClientUser from "../models/clientUser";
 import * as networkService from "../service/networkService";

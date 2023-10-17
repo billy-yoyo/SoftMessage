@@ -1,4 +1,4 @@
-import db, { DatabaseConnection } from '../../db/db';
+import db, { DatabaseConnection } from '../../../../softmessage-common/db/db';
 import * as express from 'express';
 
 export default (handler: (connection: DatabaseConnection, req: express.Request, res: express.Response) => Promise<any>) => {

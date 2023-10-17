@@ -1,10 +1,10 @@
 import { Router } from 'express';
-import createUserDto from '../dto/userRow';
-import createChannelDto from '../dto/channelRow';
+import createUserDto from '../../../softmessage-common/db/dto/userRow';
+import createChannelDto from '../../../softmessage-common/db/dto/channelRow';
 import withDb from './lib/withDb';
 import T from 'tsplate';
-import { TUser } from '../../common/models/user';
-import { TChannel } from '../../common/models/channel';
+import { TUser } from '../../../softmessage-common/models/user';
+import { TChannel } from '../../../softmessage-common/models/channel';
 
 const router = Router();
 

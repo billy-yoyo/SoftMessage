@@ -1,4 +1,4 @@
-import { Event, TEvent, EventType } from '../../common/models/event';
+import { Event, TEvent, EventType } from '../../../softmessage-common/models/event';
 import cache from '../cache/clientCache';
 import ClientMessage from '../models/clientMessage';
 import ClientUser from '../models/clientUser';
